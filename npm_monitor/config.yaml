@@ -1,0 +1,26 @@
+name: "NPM Endpoint Monitor"
+description: "Automaticky kontroluje weby z Nginx Proxy Manageru, zda nejsou omylem veřejně přístupné."
+version: "1.0.0"
+slug: "npm_monitor"
+init: false
+arch:
+  - aarch64
+  - amd64
+  - armhf
+  - armv7
+  - i386
+startup: application
+boot: auto
+
+options:
+  npm_url: "http://<IP_ADRESA_NPM>:81"
+  npm_email: "admin@example.com"
+  npm_password: "tvoje_heslo"
+  check_interval_minutes: 15
+
+# A zde určujeme datové typy pro UI
+schema:
+  npm_url: str
+  npm_email: str
+  npm_password: password
+  check_interval_minutes: int
