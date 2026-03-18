@@ -56,7 +56,10 @@ def main():
         return
 
     # Osekáme zadané výjimky o https:// a mezery, aby se to snadno porovnávalo
-    clean_ignored = [d.replace("https://", "").replace("http://", "").strip().lower() for d in ignored_domains]
+    clean_ignored = [
+        d.replace("https://", "").replace("http://", "").split('/')[0].strip().lower()
+        for d in ignored_domains
+    ]
 
     print(f"ℹ️ Konfigurace načtena. Kontrola každých {interval} minut.")
     if clean_ignored:
@@ -85,29 +88,26 @@ def main():
                     try:
                         response = requests.get(target_url, timeout=5, allow_redirects=False)
 
+                        status_text = response.status_code
                         if response.status_code == 200:
                             if is_ignored:
-                                print(f"✅ OK (Whitelist): {target_url} je veřejný, ale je to POVOLENO. (Status 200)")
                                 state = "off"
                                 icon = "mdi:shield-check-outline"
+                                status_text = "Whitelist (200)"
+                                print(f"✅ Whitelist: {clean_domain}")
                             else:
-                                print(f"⚠️ ALARM: {target_url} je NEZABEZPEČENÝ! (Status 200)")
                                 state = "on"
                                 icon = "mdi:shield-alert"
-
-                        elif response.status_code in [401, 403, 301, 302, 303]:
-                            print(f"✅ OK: {target_url} je chráněný. (Status {response.status_code})")
-                            state = "off"
-                            icon = "mdi:shield-check"
+                                print(f"⚠️ ALARM: {clean_domain}")
                         else:
-                            print(f"ℹ️ INFO: {target_url} vrací {response.status_code}")
                             state = "off"
                             icon = "mdi:shield-check"
+                            print(f"✅ OK ({response.status_code}): {clean_domain}")
 
                         update_ha_sensor(entity_id, state, {
                             "device_class": "problem",
                             "friendly_name": f"NPM: {domain}",
-                            "status_code": "Whitelist (200)" if (response.status_code == 200 and is_ignored) else response.status_code,
+                            "status_code": status_text,
                             "icon": icon
                         }, ha_token)
 

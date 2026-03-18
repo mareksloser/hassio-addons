@@ -18,8 +18,7 @@ options:
   ha_token: ""
   check_interval_minutes: 15
   # Zde budou předvyplněné povolené domény
-  ignored_domains:
-    - "verejny-blog.cz"
+  ignored_domains: []
 schema:
   npm_url: str
   npm_email: str
