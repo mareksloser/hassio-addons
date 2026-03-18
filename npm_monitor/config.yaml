@@ -1,6 +1,6 @@
 name: "NPM Endpoint Monitor"
 description: "Automaticky kontroluje weby z Nginx Proxy Manageru, zda nejsou omylem veřejně přístupné."
-version: "1.0.1"
+version: "1.0.13"
 slug: "npm_monitor"
 init: false
 arch:
@@ -11,16 +11,20 @@ arch:
   - i386
 startup: application
 boot: auto
-
 options:
   npm_url: "http://<IP_ADRESA_NPM>:81"
   npm_email: "admin@example.com"
   npm_password: "tvoje_heslo"
+  ha_token: ""
   check_interval_minutes: 15
-
-# A zde určujeme datové typy pro UI
+  # Zde budou předvyplněné povolené domény
+  ignored_domains:
+    - "verejny-blog.cz"
 schema:
   npm_url: str
   npm_email: str
   npm_password: password
+  ha_token: password
   check_interval_minutes: int
+  # [str] říká Home Assistantovi, že to má být seznam textových polí
+  ignored_domains: [str]

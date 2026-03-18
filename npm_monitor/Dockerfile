@@ -7,10 +7,10 @@ WORKDIR /app
 RUN apk add --no-cache python3 py3-requests
 
 # Kopírování našich skriptů do kontejneru
-COPY run.sh /
-COPY monitor.py /
+COPY run.sh /app/run.sh
+COPY monitor.py /app/monitor.py
 
 # Nastavení práv ke spuštění
-RUN chmod a+x /run.sh
+RUN chmod a+x /app/run.sh
 
-CMD [ "/run.sh" ]
+CMD [ "/app/run.sh" ]
