@@ -1,6 +1,6 @@
 name: "NPM Endpoint Monitor"
 description: "Automaticky kontroluje weby z Nginx Proxy Manageru, zda nejsou omylem veřejně přístupné."
-version: "1.0.0"
+version: "1.0.1"
 slug: "npm_monitor"
 init: false
 arch:
