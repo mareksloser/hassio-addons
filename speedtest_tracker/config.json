@@ -1,6 +1,6 @@
 {
   "name": "Speedtest Tracker Sensors",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "slug": "speedtest_tracker",
   "init": false,
   "description": "Pulls speedtest results from Speedtest Tracker API and creates HA sensors automatically.",
