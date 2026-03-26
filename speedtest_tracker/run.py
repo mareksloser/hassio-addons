@@ -307,8 +307,12 @@ def fetch_latest(url: str, token: str) -> dict | None:
         )
         log.info("Response status: %s", resp.status_code)
         resp.raise_for_status()
-        data = resp.json()
-        log.info("Got result ID: %s", data.get("id"))
+        body = resp.json()
+
+        # API wraps result in {"data": {...}, "message": "ok"}
+        data = body.get("data", body) if isinstance(body, dict) else body
+
+        log.info("Got result ID: %s", data.get("id") if isinstance(data, dict) else None)
         return data
     except Exception as e:
         log.error("Failed to fetch speedtest result: %s: %s", type(e).__name__, e)
