@@ -1,0 +1,22 @@
+{
+  "name": "Speedtest Tracker Sensors",
+  "version": "1.0.0",
+  "slug": "speedtest_tracker",
+  "description": "Pulls speedtest results from Speedtest Tracker API and creates HA sensors automatically.",
+  "url": "https://github.com/mareksloser/hassio-addons/tree/main/speedtest_tracker",
+  "arch": ["amd64", "aarch64", "armv7", "armhf", "i386"],
+  "startup": "application",
+  "boot": "auto",
+  "homeassistant_api": true,
+  "options": {
+    "speedtest_tracker_url": "http://192.168.1.100:8080",
+    "api_token": "",
+    "scan_interval": 300
+  },
+  "schema": {
+    "speedtest_tracker_url": "url",
+    "api_token": "str",
+    "scan_interval": "int(60,)"
+  },
+  "image": "ghcr.io/mareksloser/hassio-addons-speedtest-tracker-{arch}"
+}
