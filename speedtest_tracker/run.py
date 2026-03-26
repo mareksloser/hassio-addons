@@ -294,19 +294,24 @@ def _round(val, divisor: int) -> float | None:
 
 def fetch_latest(url: str, token: str) -> dict | None:
     """Fetch latest result from Speedtest Tracker API."""
+    api_url = f"{url.rstrip('/')}/api/v1/results/latest"
+    log.info("Fetching: %s", api_url)
     try:
         resp = requests.get(
-            f"{url.rstrip('/')}/api/v1/results/latest",
+            api_url,
             headers={
                 "Accept": "application/json",
                 "Authorization": f"Bearer {token}",
             },
             timeout=30,
         )
+        log.info("Response status: %s", resp.status_code)
         resp.raise_for_status()
-        return resp.json()
-    except requests.RequestException as e:
-        log.error("Failed to fetch speedtest result: %s", e)
+        data = resp.json()
+        log.info("Got result ID: %s", data.get("id"))
+        return data
+    except Exception as e:
+        log.error("Failed to fetch speedtest result: %s: %s", type(e).__name__, e)
         return None
 
 
@@ -316,6 +321,7 @@ def fetch_latest(url: str, token: str) -> dict | None:
 
 def push_sensors(data: dict) -> None:
     """Extract values and push all sensors to HA."""
+    log.info("Pushing %d sensors to HA...", len(SENSORS) + len(BINARY_SENSORS))
     for sensor in SENSORS:
         entity_id = f"sensor.speedtest_tracker_{sensor['key']}"
         value = sensor["extract"](data)
@@ -396,6 +402,7 @@ def main():
     last_result_id = None
 
     while running:
+        log.info("--- Poll cycle start ---")
         data = fetch_latest(url, token)
 
         if data:
