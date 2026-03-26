@@ -4,8 +4,6 @@ FROM ${BUILD_FROM}
 RUN apk add --no-cache python3 py3-requests
 
 COPY run.py /
-COPY run.sh /
+COPY run.sh /etc/services.d/speedtest_tracker/run
 
-RUN chmod a+x /run.sh
-
-CMD [ "/run.sh" ]
+RUN chmod a+x /etc/services.d/speedtest_tracker/run
